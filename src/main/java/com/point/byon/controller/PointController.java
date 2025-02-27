@@ -1,4 +1,4 @@
-package com.musinsa.byon.controller;
+package com.point.byon.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
