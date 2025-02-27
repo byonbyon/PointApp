@@ -1,4 +1,4 @@
-package com.point.byon.repository;
+package com.point.byon.entity;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;

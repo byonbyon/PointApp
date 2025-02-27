@@ -1,4 +1,4 @@
-package com.point.byon.repository;
+package com.point.byon.entity;
 
 import java.time.LocalDateTime;
 
@@ -29,7 +29,7 @@ public class UsersEntity {
 	private String password;
 	@Column(length = 20,nullable = false)
 	private String name;
-	@Column(length = 20,nullable = false)
+	@Column(length = 10,nullable = false)
 	private String role;
 
 	private LocalDateTime regidate = LocalDateTime.now();

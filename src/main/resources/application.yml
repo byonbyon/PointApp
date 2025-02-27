@@ -1,6 +1,6 @@
 spring:
   application:
-    name: MusinsaByonPoint
+    name: ByonPoint
 
   thymeleaf:
     cache: true
