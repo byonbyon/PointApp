@@ -34,5 +34,14 @@ public class EventsDTO {
 				.expiredate(expiredate)
 				.build();
 	}
+	
+	public EventsDTO toEventsDTO(EventsEntity ent) {
+		return EventsDTO.builder()
+				.id(ent.getId())
+				.name(ent.getName())
+				.startdate(ent.getStartdate())
+				.expiredate(ent.getExpiredate())
+				.build();
+	}
 }
 
