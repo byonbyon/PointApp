@@ -1,2 +1,2 @@
 # PointApp
-PointApp for Musinsa
+PointApp
