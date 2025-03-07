@@ -35,7 +35,7 @@ public class UsersPointsEntity {
 	private long pointkey;
 	
 	@ManyToOne(optional = false)
-	@JoinColumn(name="users_username")
+	@JoinColumn(name="users_id")
 	private UsersEntity usersEntity;
 	
 	@Column(length = 20,nullable = false)

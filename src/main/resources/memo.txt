@@ -1,0 +1,19 @@
+INSERT INTO events
+VALUES 
+    ('2025-12-31',NEXT VALUE FOR seq_events, now(), '입학이벤트');
+
+
+INSERT INTO users
+VALUES 
+    (now(),'USER', '홍길동', 'hong', 'hong1234');
+
+INSERT INTO products
+VALUES 
+    (45900, '9999-12-31', NEXT VALUE FOR seq_products, now(), '2025-03-20', '우먼즈 투 턱 와이드 치노 팬츠 [베이지]');
+
+
+select * from events;
+
+select * from users;
+select * from products;
+

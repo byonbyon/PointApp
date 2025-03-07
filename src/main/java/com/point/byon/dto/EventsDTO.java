@@ -35,7 +35,7 @@ public class EventsDTO {
 				.build();
 	}
 	
-	public EventsDTO toEventsDTO(EventsEntity ent) {
+	public static EventsDTO toEventsDTO(EventsEntity ent) {
 		return EventsDTO.builder()
 				.id(ent.getId())
 				.name(ent.getName())

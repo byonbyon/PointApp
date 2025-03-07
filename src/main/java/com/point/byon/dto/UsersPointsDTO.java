@@ -2,6 +2,8 @@ package com.point.byon.dto;
 
 import java.time.LocalDateTime;
 
+import com.point.byon.entity.UsersPointsEntity;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,7 +19,7 @@ public class UsersPointsDTO {
 
 	private long pointkey;
 
-	private UsersDTO usersEntity;
+	private UsersDTO usersDto;
 
 	private int pointvalue;
 
@@ -25,8 +27,33 @@ public class UsersPointsDTO {
 
 	private LocalDateTime expiredate;
 
-	private EventsDTO eventsEntity;
+	private EventsDTO eventsDto;
 
-	private OrdersDTO ordersEntity;
+	private OrdersDTO ordersDto;
+	
+	public UsersPointsEntity toUsersPointsEntity() {
+		
+		return UsersPointsEntity.builder()
+				.pointkey(pointkey)
+				.usersEntity(usersDto.toUsersEntity())
+				.pointvalue(pointvalue)
+				.regidate(regidate)
+				.expiredate(expiredate)
+				.eventsEntity(eventsDto.toEventsEntity())
+				.ordersEntity(ordersDto.toOrdersEntity())
+				.build();
+	}
+	
+	public static UsersPointsDTO toUsersPointsDTO(UsersPointsEntity ent) {
+		return UsersPointsDTO.builder()
+				.pointkey(ent.getPointkey())
+				.usersDto(UsersDTO.toUsersDTO(ent.getUsersEntity()))
+				.pointvalue(ent.getPointvalue())
+				.regidate(ent.getRegidate())
+				.expiredate(ent.getExpiredate())
+				.eventsDto(EventsDTO.toEventsDTO(ent.getEventsEntity()))
+				.ordersDto(OrdersDTO.toOrdersDTO(ent.getOrdersEntity()))
+				.build();
+	}
 }
 

@@ -24,7 +24,7 @@ public class UsersEntity {
 
 	@Id
 	@Column(length = 20)
-	private String username;
+	private String id;
 	@Column(length = 255,nullable = false)
 	private String password;
 	@Column(length = 20,nullable = false)
