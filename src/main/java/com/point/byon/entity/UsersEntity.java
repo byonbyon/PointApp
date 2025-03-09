@@ -2,12 +2,10 @@ package com.point.byon.entity;
 
 import java.time.LocalDateTime;
 
-import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.CreationTimestamp;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -32,6 +30,11 @@ public class UsersEntity {
 	@Column(length = 10,nullable = false)
 	private String role;
 
-	private LocalDateTime regidate = LocalDateTime.now();
+	private LocalDateTime regidate;
+	
+	@PrePersist
+    public void prePersist() {
+        this.regidate = LocalDateTime.now();
+    }
 }
 

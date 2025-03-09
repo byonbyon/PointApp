@@ -7,10 +7,11 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
 @Configuration
 @PropertySource({"classpath:config/paging.properties"})
-public class PagingConfig {
+@PropertySource({"classpath:config/error.properties"})
+public class PointsConfig {
 
 	@Bean
 	PropertySourcesPlaceholderConfigurer placeholderConfigurer() {
 		return new PropertySourcesPlaceholderConfigurer();
-	}//////
+	}
 }

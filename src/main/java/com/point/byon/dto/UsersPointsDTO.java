@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 import com.point.byon.entity.UsersPointsEntity;
 
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -21,39 +22,55 @@ public class UsersPointsDTO {
 
 	private UsersDTO usersDto;
 
-	private int pointvalue;
+	private int initialpoints;
+	
+	private int usablepoints;
 
 	private LocalDateTime regidate;
 
 	private LocalDateTime expiredate;
 
-	private EventsDTO eventsDto;
-
 	private OrdersDTO ordersDto;
 	
+	private String relatedPointkeys;
+	
+	@Size(max = 1000, message = "{etc.maxlength.error}")
+	private String etc;
+	
 	public UsersPointsEntity toUsersPointsEntity() {
-		
-		return UsersPointsEntity.builder()
-				.pointkey(pointkey)
-				.usersEntity(usersDto.toUsersEntity())
-				.pointvalue(pointvalue)
-				.regidate(regidate)
-				.expiredate(expiredate)
-				.eventsEntity(eventsDto.toEventsEntity())
-				.ordersEntity(ordersDto.toOrdersEntity())
-				.build();
+		UsersPointsEntity ent = UsersPointsEntity.builder()
+									.pointkey(pointkey)
+									.usersEntity(usersDto.toUsersEntity())
+									.initialpoints(initialpoints)
+									.usablepoints(usablepoints)
+									.regidate(regidate)
+									.expiredate(expiredate)
+									.relatedPointkeys(relatedPointkeys)
+									.etc(etc)
+									.build();
+		if (ordersDto != null) {
+			ent.setOrdersEntity(ordersDto.toOrdersEntity());
+		}
+
+		return ent;
 	}
 	
 	public static UsersPointsDTO toUsersPointsDTO(UsersPointsEntity ent) {
-		return UsersPointsDTO.builder()
-				.pointkey(ent.getPointkey())
-				.usersDto(UsersDTO.toUsersDTO(ent.getUsersEntity()))
-				.pointvalue(ent.getPointvalue())
-				.regidate(ent.getRegidate())
-				.expiredate(ent.getExpiredate())
-				.eventsDto(EventsDTO.toEventsDTO(ent.getEventsEntity()))
-				.ordersDto(OrdersDTO.toOrdersDTO(ent.getOrdersEntity()))
-				.build();
+		UsersPointsDTO dto = UsersPointsDTO.builder()
+									.pointkey(ent.getPointkey())
+									.usersDto(UsersDTO.toUsersDTO(ent.getUsersEntity()))
+									.initialpoints(ent.getInitialpoints())
+									.usablepoints(ent.getUsablepoints())
+									.regidate(ent.getRegidate())
+									.expiredate(ent.getExpiredate())
+									.relatedPointkeys(ent.getRelatedPointkeys())
+									.etc(ent.getEtc())
+									.build();
+		if (ent.getOrdersEntity() != null) {
+			dto.setOrdersDto(OrdersDTO.toOrdersDTO(ent.getOrdersEntity()));
+		}
+
+		return dto;
 	}
 }
 

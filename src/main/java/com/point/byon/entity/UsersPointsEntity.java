@@ -1,10 +1,6 @@
 package com.point.byon.entity;
 
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
-
-import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.CreationTimestamp;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -14,6 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.SequenceGenerator;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -38,19 +35,28 @@ public class UsersPointsEntity {
 	@JoinColumn(name="users_id")
 	private UsersEntity usersEntity;
 	
-	@Column(length = 20,nullable = false)
-	private int pointvalue;
-
-	private LocalDateTime regidate = LocalDateTime.now();
-
-	private LocalDateTime expiredate = LocalDateTime.now().plus(12, ChronoUnit.MONTHS);
+	@Column(length = 20)
+	private int initialpoints;
 	
-	@ManyToOne
-	@JoinColumn(name="events_id")
-	private EventsEntity eventsEntity;
+	@Column(length = 20)
+	private int usablepoints;
+
+	private LocalDateTime regidate;
+
+	private LocalDateTime expiredate;
 	
 	@OneToOne
 	@JoinColumn(name="orders_id")
 	private OrdersEntity ordersEntity;
+	
+	private String relatedPointkeys;
+	
+	@Column(length = 2000)
+	private String etc;
+	
+	@PrePersist
+    public void prePersist() {
+        this.regidate = LocalDateTime.now();
+    }
 }
 

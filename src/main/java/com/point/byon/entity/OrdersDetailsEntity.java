@@ -2,15 +2,13 @@ package com.point.byon.entity;
 
 import java.time.LocalDateTime;
 
-import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.CreationTimestamp;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.SequenceGenerator;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -39,8 +37,13 @@ public class OrdersDetailsEntity {
 	@JoinColumn(name="products_id")
 	private ProductsEntity productsEntity;
 
-	private LocalDateTime orderdate = LocalDateTime.now();
+	private LocalDateTime orderdate;
 
 	private LocalDateTime canceldate;
+	
+	@PrePersist
+    public void prePersist() {
+        this.orderdate = LocalDateTime.now();
+    }
 }
 

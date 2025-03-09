@@ -11,12 +11,192 @@
 	<div class="container">
 		<ul class="list-group">
 			<li class="list-group-item">
-				■실행 준비하기 <a class="btn btn-info" th:href="@{/prepare}">클릭!</a>
+				■실행 준비하기
 			</li>
-			<li class="list-group-item">
-				<small>유저데이타, 제품데이타 등 필요한 데이타를 DB에 입력합니다.</small>
+			
+			<li class="list-group-item"  th:if="${#lists.isEmpty(errorMessage)}">
+				<small>유저데이타, 제품데이타 등 필요한 데이타를 DB에 입력을 실행에 성공 했습니다.</small>
+			</li>
+			<li class="list-group-item"  th:unless="${#lists.isEmpty(errorMessage)}"  th:each="error:${errorMessage}" >
+				<small>[[${error}]]</small>
 			</li>
 		</ul>
+		<form id="form">
+			<ul class="list-group list-group-numbered">
+				<li class="list-group-item">
+					1000원 적립한다 (총 잔액 0 -> 1000 원) <a class="btn btn-warning" id="earn1">적립</a>
+				</li>
+				<li class="list-group-item">
+					500원 적립한다 (총 잔액 1000 -> 1500 원) <a class="btn btn-warning" id="earn2">적립</a>
+				</li>
+				<li class="list-group-item">
+					<input type="hidden" th:value="${order.id}" id="orderid">
+					주문번호 A1234 에서 1200원 사용한다 (총 잔액 1500 -> 300 원) <a class="btn btn-warning" id="use1">사용</a>
+				</li>
+				<li class="list-group-item">
+					A의 적립이 만료되었다 
+				</li>
+				<li class="list-group-item">
+					<input type="hidden" id="relativepointkey">
+					C의 사용금액 1200원 중 1100원을 부분 사용취소 한다 (총 잔액 300 -> 1400 원) <a class="btn btn-warning" id="cancel1">취소</a>
+				</li>
+			</ul>
+		</form>
+		
+		<table class="table table-dark table-hover text-center invisible" id="history-table">
+			<thead>
+				<tr>
+					<th class="col-1">포인트키</th>
+					<th class="col-2">유저</th>
+					<th class="col-2">초기포인트</th>
+					<th class="col-2">사용가능포인트</th>
+					<th class="col-2">등록일</th>
+					<th class="col-2">유효기간</th>
+					<th class="col-2">주문번호</th>
+					<th class="col-2">관련키</th>
+					<th class="col-2">비고</th>
+				</tr>
+			</thead>
+			<tbody class="table-sm down-file-body" id="history">						
+				
+			</tbody>
+		</table>
+
 	</div>
+	
+	<script th:inline="javascript">
+		const formNode = document.getElementById('form');	
+		const earn1ButtonNode = document.getElementById('earn1');
+		const earn2ButtonNode = document.getElementById('earn2');
+		const use1ButtonNode = document.getElementById('use1');
+		const cancel1ButtonNode = document.getElementById('cancel1');
+		
+		const contextUrl = [[@{/}]];
+		const userId = [[${session.userId}]];
+		let method = '';
+		let url = '';
+		let reqData;
+		
+		// 1000원 적립한다.
+		earn1ButtonNode.onclick = () => {
+
+			url = contextUrl + 'users/' + userId + '/points';
+			console.log(url);
+			method = 'POST';
+			reqData = {
+				initialpoints : 1000,
+				usablepoints : 1000,
+				etc : '1000원 적립한다',
+				expiredate : '2025-12-31T23:59:59',
+				usersDto : {
+					id : userId
+				}
+				};
+			send(url, method, reqData);
+		};
+		
+		// 500원 적립한다.
+		earn2ButtonNode.onclick = () => {
+
+			url = contextUrl + 'users/' + userId + '/points';
+			console.log(url);
+			method = 'POST';
+			reqData = {
+				initialpoints : 500,
+				usablepoints : 500,
+				etc : '500원 적립한다',
+				expiredate : '2025-12-31T23:59:59',
+				usersDto : {
+					id : userId
+				}
+				};
+			send(url, method, reqData);
+		};
+		
+		//  1200원 사용한다.
+		use1ButtonNode.onclick = () => {
+
+			url = contextUrl + 'users/' + userId + '/points';
+			console.log(url);
+			method = 'PUT';
+			reqData = {
+				initialpoints : -1200,
+				etc : '1200원 사용한다.',
+				expiredate : '2025-12-31T23:59:59',
+				usersDto : {
+					id : userId
+				},
+				ordersDto : {
+					id : document.getElementById('orderid').value
+				}
+				};
+			send(url, method, reqData);
+		};
+		
+		// 1100원 부분 사용 취소
+		cancel1ButtonNode.onclick = () => {
+			console.log(document.getElementById('relativepointkey').value);
+			url = contextUrl + 'users/' + userId + '/points/cancel';
+			console.log(url);
+			method = 'PUT';
+			reqData = {
+				initialpoints : 1100,
+				etc : '1100원을 부분 사용취소',
+				expiredate : '2025-12-31T23:59:59',
+				usersDto : {
+					id : userId
+				},
+				relatedPointkeys : document.getElementById('relativepointkey').value
+				};
+			send(url, method, reqData);
+		};
+
+		function send(url, method, reqData) {
+			return fetch(url, {method, 
+				headers: {
+                    'Content-Type': 'application/json'
+                },
+				body : JSON.stringify(reqData)})
+			.then(response => {
+				console.log(response);
+				if (!response.ok) {
+					return response.text().then(errorMessage => {
+						throw new Error(errorMessage);
+					});
+				}
+				return response.json();
+			})	
+			.then(datas => {
+				console.log('datas --');
+				console.log(datas);
+				
+				document.getElementById('relativepointkey').value = datas.resultDTO.pointkey;
+				
+				document.getElementById('history').innerHTML = '';
+				
+				datas.historyDTO.forEach((history)=>{
+					let trNode = document.createElement('tr');
+					trNode.setAttribute('id', 'histroy-' + history.pointkey);
+					const ordersId = history.ordersDto === null ? '-' : history.ordersDto.id;
+					const regidate = history.regidate.split('T')[0];
+					const expiredate = history.regidate.split('T')[0];
+					const values=[history.pointkey, history.usersDto.id, history.initialpoints, history.usablepoints, regidate, expiredate, ordersId, history.relatedPointkeys, history.etc];
+					values.forEach((value,index)=>{
+						let tdNode = document.createElement('td');
+						if(index != values.length-1){
+							tdNode.textContent = value;
+						}
+						else{
+							tdNode.innerHTML=value;
+						}
+						trNode.append(tdNode);
+					});
+					document.getElementById('history').prepend(trNode);
+					document.getElementById('history-table').classList.remove('invisible');
+				});
+			})
+			.catch(e => console.log('에러 : ', e.message));
+		}
+	</script>
 </body>
 </html>
