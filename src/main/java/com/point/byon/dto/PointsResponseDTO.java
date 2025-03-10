@@ -18,4 +18,6 @@ public class PointsResponseDTO {
 	private List<UsersPointsDTO> historyDTO;
 	
 	private UsersPointsDTO resultDTO;
+	
+	private String errorCode;
 }

@@ -21,5 +21,5 @@ public interface UsersPointsRepository  extends JpaRepository<UsersPointsEntity,
 	
 	List<UsersPointsEntity> findByPointkeyInOrderByExpiredateAsc(List<Long> pointKeys);
 
-	UsersPointsEntity findByPointkey(long relatedPointkey);
+	//UsersPointsEntity findByPointkey(long relatedPointkey);
 }

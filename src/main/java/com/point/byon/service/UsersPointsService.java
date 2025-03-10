@@ -19,6 +19,7 @@ public class UsersPointsService {
 		@Autowired
 		private UsersPointsRepository usersPointsRepo;
 		
+		@Transactional(readOnly = true)
 		public List<UsersPointsDTO> getPointsHistory(String userId) {
 			List<UsersPointsEntity> points = usersPointsRepo.findByUsersEntityOrderByExpiredateAsc(UsersEntity.builder().id(userId).build());
 			
@@ -80,8 +81,14 @@ public class UsersPointsService {
 		public UsersPointsDTO cancelPoints(UsersPointsDTO dto) {
 			System.out.println(dto.getRelatedPointkeys());
 			UsersPointsEntity cancelPoint = usersPointsRepo.save(dto.toUsersPointsEntity());
+			if (cancelPoint == null) {
+				return null;
+			}
 			
-			UsersPointsEntity usePoint = usersPointsRepo.findByPointkey(Long.parseLong(dto.getRelatedPointkeys()));
+			UsersPointsEntity usePoint = usersPointsRepo.findById(Long.parseLong(dto.getRelatedPointkeys())).get();
+			if (usePoint == null) {
+				return null;
+			}
 			
 			List<Long> pointKeyList = new ArrayList<>();
 			if (usePoint.getRelatedPointkeys() != null) {
@@ -92,6 +99,9 @@ public class UsersPointsService {
 			}
 
 			List<UsersPointsEntity> relativeUsersPoints = usersPointsRepo.findByPointkeyInOrderByExpiredateAsc(pointKeyList);
+			if (relativeUsersPoints == null || relativeUsersPoints.size() < 1) {
+				return null;
+			}
 			int remainingToCancel = dto.getInitialpoints();
 			for (UsersPointsEntity relPo : relativeUsersPoints) {
 				if (relPo.getExpiredate().isBefore(LocalDateTime.now())) {
