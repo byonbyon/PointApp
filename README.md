@@ -34,7 +34,7 @@ http://localhost:8080/
 
 
 # 과제설명
-## 기능 확인 방법 1 - Swagger에서 확인
+## 기능 확인 방법 - Swagger에서 확인
 ### 사전준비
 브라우저 주소를 http://localhost:8080/swagger-ui.html 로 변경해서 연다.
 ### 기능확인
