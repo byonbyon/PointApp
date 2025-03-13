@@ -36,8 +36,7 @@ http://localhost:8080/
 # 과제설명
 ## 기능 확인 방법 1 - Swagger에서 확인
 ### 사전준비
-1. 브라우저에서 http://localhost:8080/ 를 연다. (실행에 필요한 데이타 입력용)
-2. 브라우저 주소를 http://localhost:8080/swagger-ui.html 로 변경해서 연다.
+브라우저 주소를 http://localhost:8080/swagger-ui.html 로 변경해서 연다.
 ### 기능확인
 #### 1000원 적립
 1. Swagger에서 (POST) /users/{userId}/points 엔드포인트를 선택한다.
