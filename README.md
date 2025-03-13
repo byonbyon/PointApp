@@ -96,7 +96,8 @@ Request body
       },
       "ordersDto" : {
          "id": 1
-      }
+      },
+      "relatedPointkeys" : "1,2"
  }
    ```
   4. [Execute]버튼을 클릭한다.
@@ -105,6 +106,7 @@ Request body
 1. Swagger에서 (PUT) /users/{userId}/points/cancel 엔드포인트를 선택한다.
 2. Try it out버튼을 클릭한다.
 3. 이하를 입력한다.
+   relatedPointkeys는 사용취소하고 싶은 포인트 키를 입력합니다.
 
 userId  : hong
 Request body
@@ -115,9 +117,6 @@ Request body
       "expiredate" : "2025-12-31T23:59:59",
       "usersDto" : {
          "id": "hong"
-      },
-      "ordersDto" : {
-         "id": 1
       },
       "relatedPointkeys" : 3
  }
