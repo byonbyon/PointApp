@@ -40,7 +40,7 @@ http://localhost:8080/
 2. 브라우저 주소를 http://localhost:8080/swagger-ui.html 로 변경해서 연다.
 ### 기능확인
 #### 1000원 적립
-1. Swagger에서 (POST) /users/{userId}points 엔드포인트를 선택한다.
+1. Swagger에서 (POST) /users/{userId}/points 엔드포인트를 선택한다.
 2. Try it out버튼을 클릭한다.
 3. 이하를 입력한다.
 
@@ -48,16 +48,89 @@ userId  : hong
 Request body
    ```
    {
-         initialpoints : 1000,
-         usablepoints : 1000,
-         etc : '1000원 적립한다',
-         expiredate : '2025-12-31T23:59:59',
-         usersDto : {
-            id : hong
-         }
-	}
+      "initialpoints" : 1000,
+      "usablepoints" : 1000,
+      "etc" : "1000원 적립한다",
+      "expiredate" : "2025-12-31T23:59:59",
+      "usersDto" : {
+         "id": "hong"
+      }
+ }
    ```
   4. [Execute]버튼을 클릭한다.
+
+#### 500원 적립
+1. Swagger에서 (POST) /users/{userId}/points 엔드포인트를 선택한다.
+2. Try it out버튼을 클릭한다.
+3. 이하를 입력한다.
+
+userId  : hong
+Request body
+   ```
+   {
+      "initialpoints" : 500,
+      "usablepoints" : 500,
+      "etc" : "500원 적립한다",
+      "expiredate" : "2025-12-31T23:59:59",
+      "usersDto" : {
+         "id": "hong"
+      }
+ }
+   ```
+  4. [Execute]버튼을 클릭한다.
+
+#### 1200원 사용
+1. Swagger에서 (PUT) /users/{userId}/points 엔드포인트를 선택한다.
+2. Try it out버튼을 클릭한다.
+3. 이하를 입력한다.
+
+userId  : hong
+Request body
+   ```
+   {
+      "initialpoints" : -1200,
+      "etc" : "1200원 사용한다",
+      "expiredate" : "2025-12-31T23:59:59",
+      "usersDto" : {
+         "id": "hong"
+      },
+      "ordersDto" : {
+         "id": 1
+      }
+ }
+   ```
+  4. [Execute]버튼을 클릭한다.
+
+#### 1100원 부분 사용 취소
+1. Swagger에서 (PUT) /users/{userId}/points/cancel 엔드포인트를 선택한다.
+2. Try it out버튼을 클릭한다.
+3. 이하를 입력한다.
+
+userId  : hong
+Request body
+   ```
+   {
+      "initialpoints" : 1100,
+      "etc" : "1100원을 부분 사용취소",
+      "expiredate" : "2025-12-31T23:59:59",
+      "usersDto" : {
+         "id": "hong"
+      },
+      "ordersDto" : {
+         "id": 1
+      },
+      "relatedPointkeys" : 3
+ }
+   ```
+  4. [Execute]버튼을 클릭한다.
+
+#### 포인트 이력 조회
+1. Swagger에서 (GET) /users/{userId}/points/history 엔드포인트를 선택한다.
+2. Try it out버튼을 클릭한다.
+3. 이하를 입력한다.
+
+userId  : hong
+
 
 ## 기능 확인 방법 2 - 브라우저에서 확인
 1. 브라우저에서 http://localhost:8080/ 를 연다.
